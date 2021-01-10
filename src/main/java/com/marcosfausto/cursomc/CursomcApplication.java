@@ -77,14 +77,14 @@ public class CursomcApplication implements CommandLineRunner {
 		Estado est1 = new Estado(null,"São Paulo");
 		Estado est2 = new Estado(null,"Minas Gerais");
 		
-		Cidade c1 = new Cidade(null,"Uberlândia");
-		Cidade c2 = new Cidade(null,"São Paulo");
-		Cidade c3 = new Cidade(null,"Campinas");
+		Cidade c1 = new Cidade(null,"Uberlândia",est2);
+		Cidade c2 = new Cidade(null,"São Paulo",est1);
+		Cidade c3 = new Cidade(null,"Campinas",est1);
 		
 		Cliente cli1 = new Cliente(null,"Maria Silva","maria@gmail.com","36378912377",TipoCliente.PESSOAFISICA);
 		
-		Endereco end1 = new Endereco(null,"Rua Flores","300","apto 203","Jardim","38220834",c1);
-		Endereco end2 = new Endereco(null,"Avenida Matos","105","Sala 800","Centro","38777012",c2);
+		Endereco end1 = new Endereco(null,"Rua Flores","300","apto 203","Jardim","38220834",cli1,c1);
+		Endereco end2 = new Endereco(null,"Avenida Matos","105","Sala 800","Centro","38777012",cli1,c2);
 
 
 		cat1.getProdutos().addAll(Arrays.asList(p1,p2,p3));
