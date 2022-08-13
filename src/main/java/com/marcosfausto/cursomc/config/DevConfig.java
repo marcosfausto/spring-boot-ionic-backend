@@ -2,6 +2,9 @@ package com.marcosfausto.cursomc.config;
 
 import java.text.ParseException;
 
+import com.marcosfausto.cursomc.services.EmailService;
+import com.marcosfausto.cursomc.services.MockEmailService;
+import com.marcosfausto.cursomc.services.SmtpEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +32,11 @@ public class DevConfig {
 		
 		dbService.instantiateTestDatabase();
 		return true;
+	}
+
+	@Bean
+	public EmailService emailService() {
+		return new SmtpEmailService();
 	}
 
 }
