@@ -31,6 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // Lista de end points sempre permitidos ( apenas para GET )
     private static final String[] PUBLIC_MATCHERS_GET = {
             "/produtos/**",
+            "/clientes/**",
             "/categorias/**"
     };
 

@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
+import com.marcosfausto.cursomc.domain.enums.Perfil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -86,9 +87,13 @@ public class DBService {
 		Cidade c3 = new Cidade(null,"Campinas",est1);
 		
 		Cliente cli1 = new Cliente(null,"Maria Silva","maria@gmail.com","36378912377",TipoCliente.PESSOAFISICA,pe.encode("123"));
-		
+
+		Cliente cli2 = new Cliente(null,"Ana Costa","ana@gmail.com","50470634022",TipoCliente.PESSOAFISICA,pe.encode("123"));
+		cli2.addPerfil(Perfil.ADMIN);
+
 		Endereco end1 = new Endereco(null,"Rua Flores","300","apto 203","Jardim","38220834",cli1,c1);
 		Endereco end2 = new Endereco(null,"Avenida Matos","105","Sala 800","Centro","38777012",cli1,c2);
+		Endereco end3 = new Endereco(null,"Avenida Floriano","2106",null,"Centro","28777012",cli2,c2);
 
 		
 		cat1.getProdutos().addAll(Arrays.asList(p1,p2,p3));
@@ -121,9 +126,14 @@ public class DBService {
 		
 		cli1.getEnderecos().addAll(Arrays.asList(end1,end2));
 		cli1.getTelefones().addAll(Arrays.asList("27363323","93838393"));
-		
+
+		cli2.getEnderecos().addAll(Arrays.asList(end3));
+		cli2.getTelefones().addAll(Arrays.asList("976857681","34662172"));
+
+
 		end1.setCliente(cli1);
 		end2.setCliente(cli1);
+		end3.setCliente(cli2);
 		
 		SimpleDateFormat stf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		
@@ -151,8 +161,8 @@ public class DBService {
 		produtoRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11));
 		estadoRepository.saveAll(Arrays.asList(est1,est2));
 		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
-		clienteRepository.saveAll(Arrays.asList(cli1));
-		enderecoRepository.saveAll(Arrays.asList(end1,end2));
+		clienteRepository.saveAll(Arrays.asList(cli1,cli2));
+		enderecoRepository.saveAll(Arrays.asList(end1,end2,end3));
 		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
 		itemPedidoRepository.saveAll(Arrays.asList(ip1,ip2,ip3));
