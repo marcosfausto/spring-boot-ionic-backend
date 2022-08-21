@@ -1,6 +1,7 @@
 package com.marcosfausto.cursomc.config;
 
 import com.marcosfausto.cursomc.security.JWTAuthenticationFilter;
+import com.marcosfausto.cursomc.security.JWTAuthorizationFilter;
 import com.marcosfausto.cursomc.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -61,6 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(PUBLIC_MATCHERS).permitAll() // Permite todos os métodos HTTP
                 .anyRequest().authenticated(); // qualquer outro request, necessita autenticação
         http.addFilter(new JWTAuthenticationFilter(authenticationManager(),jwtUtil));
+        http.addFilter(new JWTAuthorizationFilter(authenticationManager(),jwtUtil,userDetailsService));
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // assegurar que o back-end nao vai criar sessao de usuário
 
     }
