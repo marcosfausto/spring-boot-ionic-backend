@@ -1,14 +1,18 @@
 package com.marcosfausto.cursomc.config;
 
+import com.marcosfausto.cursomc.security.JWTAuthenticationFilter;
+import com.marcosfausto.cursomc.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -22,6 +26,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private Environment env;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private JWTUtil jwtUtil;
 
     // Lista de end points sempre permitidos
     private static final String[] PUBLIC_MATCHERS = {
@@ -50,8 +60,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll() // permite apenas GET para a lista em questão
                 .antMatchers(PUBLIC_MATCHERS).permitAll() // Permite todos os métodos HTTP
                 .anyRequest().authenticated(); // qualquer outro request, necessita autenticação
+        http.addFilter(new JWTAuthenticationFilter(authenticationManager(),jwtUtil));
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // assegurar que o back-end nao vai criar sessao de usuário
 
+    }
+
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
     }
 
     // permite o acesso a todos os end points com configurações default
