@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -23,6 +24,7 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true) // ativa o controle do @PreAuthorize("hasAnyRole('ADMIN')")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -46,6 +48,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/categorias/**"
     };
 
+    private static final String[] PUBLIC_MATCHERS_POST = {
+            "/clientes/**",
+    };
+
     @Override
     protected void configure(HttpSecurity http) throws Exception{
 
@@ -58,6 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable();
 
         http.authorizeRequests()
+                .antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll() // permite apenas POST para a lista em questão
                 .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll() // permite apenas GET para a lista em questão
                 .antMatchers(PUBLIC_MATCHERS).permitAll() // Permite todos os métodos HTTP
                 .anyRequest().authenticated(); // qualquer outro request, necessita autenticação
