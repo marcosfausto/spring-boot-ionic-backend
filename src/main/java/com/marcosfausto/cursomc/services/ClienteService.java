@@ -1,5 +1,6 @@
 package com.marcosfausto.cursomc.services;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +26,7 @@ import com.marcosfausto.cursomc.repositories.CidadeRepository;
 import com.marcosfausto.cursomc.repositories.ClienteRepository;
 import com.marcosfausto.cursomc.repositories.EnderecoRepository;
 import com.marcosfausto.cursomc.services.exception.ObjectNotFoundException;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ClienteService {
@@ -37,6 +39,9 @@ public class ClienteService {
 	
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+
+	@Autowired
+	private S3Service s3Service;
 		
 	public Cliente find(Integer id) {
 
@@ -98,6 +103,10 @@ public class ClienteService {
 	private void updateData(Cliente newObj, Cliente obj) {
 		newObj.setNome(obj.getNome());
 		newObj.setEmail(obj.getEmail());
+	}
+
+	public URI uploadProfilePicture(MultipartFile multipartFile) {
+		return s3Service.uploadFile(multipartFile);
 	}
 	
 	@Transactional
