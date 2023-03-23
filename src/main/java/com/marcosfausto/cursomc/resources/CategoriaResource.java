@@ -87,6 +87,7 @@ public class CategoriaResource {
 			@RequestParam(value="direction", defaultValue="ASC") String direction){
 		Page<Categoria> list = service.findPage(page, linesPerPage, orderBy, direction);
 		Page<CategoriaDTO> listDTO = list.map(obj -> new CategoriaDTO(obj));
+		listDTO.forEach(categoria -> categoria.add(linkTo(methodOn(CategoriaResource.class).find(categoria.getId())).withSelfRel()));
 		return ResponseEntity.ok().body(listDTO);
 	}
 
