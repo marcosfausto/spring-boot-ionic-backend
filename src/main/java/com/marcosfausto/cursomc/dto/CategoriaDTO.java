@@ -1,14 +1,13 @@
 package com.marcosfausto.cursomc.dto;
 
-import java.io.Serializable;
+import com.marcosfausto.cursomc.domain.Categoria;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 
-import org.hibernate.validator.constraints.Length;
-
-import com.marcosfausto.cursomc.domain.Categoria;
-
-public class CategoriaDTO implements Serializable {
+public class CategoriaDTO  extends RepresentationModel<CategoriaDTO> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

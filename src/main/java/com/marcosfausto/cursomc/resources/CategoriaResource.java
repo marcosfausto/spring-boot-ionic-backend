@@ -18,6 +18,9 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
 @RequestMapping(value="/categorias")
 public class CategoriaResource {
@@ -71,6 +74,7 @@ public class CategoriaResource {
 	public ResponseEntity<List <CategoriaDTO>> findAll(){
 		List<Categoria> list = service.findAll();
 		List<CategoriaDTO> listDTO = list.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+		listDTO.forEach(categoria -> categoria.add(linkTo(methodOn(CategoriaResource.class).find(categoria.getId())).withSelfRel()));
 		return ResponseEntity.ok().body(listDTO);
 	}
 
